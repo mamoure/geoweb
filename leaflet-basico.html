@@ -3,7 +3,7 @@
     Meta viewport: adapta mi página al dispositivo que lo está viendo
     Llamar a las librerías que vamos a usar en leaflet, vía url: petición a la librería js y librería css
     Constructor principal de mapa: L.map 
-    Cada constructor: propiedades(visibilidad), métodos, eventos (acciones en el mapa)
+    Cada constructor: propiedades(visibilidad), métodos, eventos (acciones en el mapa, yo controlo)
 -->
 
 
@@ -27,8 +27,8 @@
         
         <!--Definimos una función con un constructor/mapa (L.map), un constructor/capa(L.titleLayer) y un método/capa (addTo)
         Constructor () y options {}
-        función nombre(){ L.map({}); L.titleLayer({}); capa.método();}
-        Métodos: nombredelobjeto.nombremétodo
+        función nombre(){ L.map({}); L.titleLayer(x,{}); capa.método();}
+        Métodos: nombreobjeto.nombremétodo
         -->
         <script>
                 var map,capa1;
@@ -44,7 +44,24 @@
                     attribution : "OSM"
                     });
                     capa1.addTo(map);
+                    //Constructor de un marker L.marker([long,lat]).addTo(map)
+                    L.marker([41.3954, 2.16859]).addTo(map).bindPopup('Hola punto');
+                    //Evento: punto con estilo al hacer clic:
+                    //Variable.on('nombreevento', function(x) {new L.circleMarkle(x.latlng,{})}.addTop(map)
+                    //console.info(variable): para investigar/entender cómo funciona desde la consola f12 del visor
+                    map.on('click', function (e) {
+                        console.info(e);
+                        new L.circleMarker(e.latlng, {
+                            color: '#ffffff',
+                            fillColor: '#00ff00',
+                            fillOpacity: 0.9,
+                            radius: 8
+                        }).addTo(map)
+                            .bindPopup(e.latlng.lat + "," + e.latlng.lng)
+                            .openPopup();
+                    });
                 }
+                
         </script>
     </head>
     <body onLoad="init()">
