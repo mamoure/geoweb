@@ -1,0 +1,53 @@
+<!--
+    Meta robots: para que se indexe y lo busquen los navegadores
+    Meta viewport: adapta mi página al dispositivo que lo está viendo
+    Llamar a las librerías que vamos a usar en leaflet, vía url: petición a la librería js y librería css
+    Constructor principal de mapa: L.map 
+    Cada constructor: propiedades(visibilidad), métodos, eventos (acciones en el mapa)
+-->
+
+
+<html lang="es">
+    <head>
+    <title>Leaflet básico</title>
+        <style>
+            body { margin: 0; padding: 0; overflow: hidden; }
+            #map { height: 100%; width: 100%; }
+        </style>
+    
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="autor"/>
+        <meta name="description" content="descripción página">
+        <meta name="robots" content="index,follow">
+
+        <!--Aquí estoy llamando a las librerías de leaflet(js+css)-->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+        
+        <!--Definimos una función con un constructor/mapa (L.map), un constructor/capa(L.titleLayer) y un método/capa (addTo)
+        Constructor () y options {}
+        función nombre(){ L.map({}); L.titleLayer({}); capa.método();}
+        Métodos: nombredelobjeto.nombremétodo
+        -->
+        <script>
+                var map,capa1;
+                function init(){
+                    map = L.map("map",{
+                    center:[41.6863, 1.8382],
+                    zoom:8
+                    });
+                    capa1= L.tileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    {
+                    maxZoom : 19,
+                    minZoom : 1,
+                    attribution : "OSM"
+                    });
+                    capa1.addTo(map);
+                }
+        </script>
+    </head>
+    <body onLoad="init()">
+        <div id="map"></div>
+    </body>
+</html>
