@@ -1,0 +1,84 @@
+<html lang="es">
+    <head>
+        <title>Ejemplo 1 Leaflet-controles</title>
+        <meta charset="utf-8" />
+        <!--Para que se adapte a la pantalla-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="author" content="autor" />
+        <meta name="description" content="descripción página" />
+        <meta name="robots" content="index,follow" />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+    
+            #map {
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+    
+        <script>
+            //Creo las variables
+            var map, osm, esri, terreno;
+            var controlCapas;
+            var controlEscala;
+            //Función que se ejecuta en el body
+            function init() {
+                //Iniciar mapa mediante un método (setView:lat, long, zoom)
+                map = L.map('map').setView([41.6863, 1.8382], 8);
+    
+                //Creamos capa de tipo tileLayer ('url de conexión', {opciones}).addTo(map)
+                esri = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    maxZoom: 17,
+                    minZoom: 1,
+                    attribution: 'Tiles © Esri',
+                }).addTo(map);
+    
+                //Creamos capa de tipo tileLayer ('url de conexión', {opciones}) NO ESTÁ AÑADIDA AL MAPA
+                osm = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    minZoom: 1,
+                    attribution: 'OSM'
+                });
+    
+                //Creamos capa de tipo tileLayer ('url de conexión', {opciones}) NO ESTÁ AÑADIDA AL MAPA
+                terreno =
+                    L.tileLayer('http://{s}.tile.stamen.com/terrain-background/{z}/{x}/{y}.png', {
+                        maxZoom: 19,
+                        attribution: 'Stamen terrain',
+                        opacity: 0.5
+                    });
+
+                //Objecto con opciones
+                var baseMaps = {
+                    "Orto_esri": esri,
+                    "Mapa_osm": osm
+                };
+                
+                //Objecto con opciones
+                var overlayMaps = {
+                    "Terrain": terreno
+                };
+    
+                //Creamos control de capas y lo añadimos al mapa
+                controlCapas = L.control.layers(baseMaps, overlayMaps, {collapsed:false});
+                controlCapas.addTo(map);
+    
+                //Creamos control de escala y se añade al mapa
+                controlEscala = L.control.scale();
+                controlEscala.addTo(map);
+            }
+        </script>
+    </head>
+    
+    <body onLoad="init()">
+        <div id="map">
+        </div>
+    </body>
+    
+</html>
