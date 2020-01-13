@@ -1,0 +1,112 @@
+<!--Cuenta de mapbox:
+Usuario: mamoure
+-->
+
+
+<html>
+    <head>
+        <meta charset='utf-8' />
+        <title>Mapbox estilo</title>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            #map {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                width: 100%;
+                height: 100%
+            }
+        </style>
+        <script>
+            //Añadir token y estilo propio
+            function init() {
+                mapboxgl.accessToken =
+                    'pk.eyJ1IjoibWFtb3VyZSIsImEiOiJjazRiZ3k4M28wOGk5M2RwaXV2dHdvbGJiIn0.ENMRAvSVPgsiPLQ4GWB9ow';
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mamoure/ck5cpax7u007w1epq4nx2kcsg',
+                    center: [2.16859, 41.3954],
+                    zoom: 13,
+                    attributionControl: false,
+                    //Modificar rotacion
+                    pitch:45,
+                    //Para que en la URL aparezca zoom/latitud/longitud/orientación/rotación
+                    hash:true
+                });
+                
+                //Añadir controles al mapa: map.addControl(variable.nombrecontrol({opcion:opcion, opcion:ocpion}));
+                map.addControl(new mapboxgl.AttributionControl({compact: true}));
+                map.addControl(new mapboxgl.NavigationControl());
+                
+                //Control de geolocalización
+                map.addControl(new mapboxgl.GeolocateControl());
+
+                //Añadir marker
+                var marker = new mapboxgl.Marker()
+                .setLngLat([2.161648, 41.3977])
+                .addTo(map);
+            
+                //Añadir capa propia al mapa: descargar datos en formato geojson o convertirlos a coordendas 4446
+                //Añadir capa geojson a mapbox: tilesets > new tileset / style > edit style > add new layer > seleccionar tileset > publish / actualizar style
+                //Para práctica final: convertir shape en geojson > cargar como tileset > añadir tileset > editar capa type: fill extrusion
+
+                //Añadir capa de manera independiente: tilesets > new tileset > copy tileset ID
+                //Siempre que se añadan capas extras tienen que estar dentro del evento map.on('evento',función) EVENTO ON LOAD
+                map.on('load', function () {
+                    //Añadir dataset/source (puede tener una o varias capas) (type:"vector" si es tileset, type:"geojson" si es geojson)
+                    map.addSource("viasciclables_source", {
+                        type: "vector",
+                        url: "mapbox://mamoure.ay0xxax0" //Escribir "mapbox://tilesetID"
+                    });
+                    //Añadir como capa (el id tiene que ser único)
+                    map.addLayer({
+                        id: "viasciclables",
+                        type: "line",
+                        source: "viasciclables_source",
+                        'source-layer': "VIES_CICLABLES-5rtmwb", //Titulo capa
+                        //Estilo de las vías ciclables (paint, layout, filter)
+                        paint:{
+                            'line-color':"#000000",
+                            "line-width":3
+                        }
+                    });
+                });
+
+                //Añadir un popup al evento click: map.on('evento', 'idcapa', función)
+                map.on('click','viasciclables',function(e){
+                    //Creo variable de texto vacía
+                    var text = "";
+                    //console.info(e); Bucle que recorre todas las vías
+                    for (key in e.features[0].properties){
+                        text += "<b>"+key+"</b>:"+e.features[0].properties[key]+"<br>";
+                        }
+                    new mapboxgl.Popup()
+                        .setLngLat(e.lngLat)
+                        .setHTML(text)
+                        .addTo(map);
+                });
+
+                //Evento mouseenter
+                map.on('mouseenter', 'viasciclables', function() {
+                map.getCanvas().style.cursor = 'pointer';                    
+                });
+                //Evento mouseleave
+                map.on('mouseleave', 'viasciclables', function() {
+                map.getCanvas().style.cursor = '';                    
+                });
+
+            }
+        </script>
+    </head>
+
+    <body onload="init()">
+        <div id="map"></div>
+    </body>
+
+</html>  
