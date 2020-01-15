@@ -1,0 +1,67 @@
+<!--
+TRABAJAREMOS SÓLO CON LA LIBRERIA DE MAPBOX, NO MAPBOX ESTUDIO
+Buscamos información de terremotos en la siguiente url:
+http://api.geonames.org/earthquakesJSON?north=44.1&south=-9.9&east=-22.4&west=55.2&username=masterupc PETICION
+Información geojson: array de cada terremoto (fecha, latitud, longitud, source, magnitud) RESPUESTA
+Esa información hay que pasarla a geojson, editor de geojson: geojson.io
+-->
+
+
+<html>
+    <head>
+    <meta charset='utf-8' />
+    <title>Terremotos</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+    <!--Reutilizo un estilo ya definido: mapabase.css-->
+    <link href='css/mapabase.css' rel='stylesheet' />
+    <!--Añado dos archivos javascript que iré cumplimentando poco a poco-->
+    <script src='js/utils.js'></script>
+    <script src='js/terremotos.js'></script>
+    <script>
+        var map;
+        function init() {
+ 
+            mapboxgl.accessToken = "";
+            map = new mapboxgl.Map({
+                container: 'map',
+                style: 'https://geoserveis.icgc.cat/contextmaps/positron.json',
+                center: [9.746, 40.473],
+                zoom: 5.5,
+                hash: true,
+                pitch: 0,
+                attributionControl: false
+            });
+            map.addControl(new mapboxgl.AttributionControl({
+                compact: true
+            }));
+            map.addControl(new mapboxgl.NavigationControl());   
+            
+            //Llamo la función al cargar
+            map.on("load", function () {
+            generarPeticionTerremotos();
+            //Añado función popup, sólo una vez al cargar el mapa, en el evento on load, pasar el ID de la capa que queremos hacer click (terremotos)
+            addPopupToMap("terremotos");
+            }); // fin load mapa
+
+            //Llamo a la función al hacer zoom
+            map.on("zoomend", function () {
+            generarPeticionTerremotos();
+            }); //fin zoom
+
+            //Llamo a la función al mover
+            map.on("moveend", function () {
+            generarPeticionTerremotos();
+            }); //fin mover
+ 
+        } //fin init
+ 
+    </script>
+    </head>
+ 
+    <body onload="init()">
+        <div id='map'></div>
+    </body>
+ 
+    </html>
