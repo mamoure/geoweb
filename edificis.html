@@ -1,0 +1,50 @@
+<html>
+
+    <head>
+        <meta charset='utf-8' />
+        <title>Edificios</title>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.6.1/mapbox-gl.css' rel='stylesheet' />
+        <link href='css/mapabase.css' rel='stylesheet' /> <!-- *** Carregar el nostre CSS *** -->
+        <script src='js/utils.js'></script>
+        <script src='js/edificis.js'></script>
+        <script>
+            var map;
+            function init() {
+                // Aquí s'ha d'escriure el nostre token de mapbox: https://account.mapbox.com/ -> Default public token
+                mapboxgl.accessToken = 'pk.eyJ1IjoibWFtb3VyZSIsImEiOiJjazRiZ3k4M28wOGk5M2RwaXV2dHdvbGJiIn0.ENMRAvSVPgsiPLQ4GWB9ow';
+                map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/dark-v10',
+                    center: [2.16859, 41.3954],
+                    zoom: 15,
+                    attributionControl: false,
+                    pitch: 45,
+                    hash: true
+                });
+                map.addControl(new mapboxgl.AttributionControl({ compact: true }));
+                map.addControl(new mapboxgl.NavigationControl());
+
+                // Carreguem capa que estilitza els edificis en funció de l'alçada
+                map.on('load', function () {
+                    addEdificiosCapa();
+                    addPopupToMapEdificis("edificis");
+                    //addPopupToMap("edificis"); // Si volem visualitzar en el pop tota la informació de la capa cridar aquesta i comentar l'anterior
+                });
+            }
+        </script>
+    </head>
+
+    <body onload="init()">
+        <div class="panelTopIzquierda">
+            <h5>Altura edificis</h5>
+            <label id="altura">Altura superior a 0 plantes</label> <!-- S'anirà reescrivint quan desplacem l'slider del mapa -->
+            <input onChange="filtrarEdificis(this.value)" id="slider" type="range" min="1" max="110" step="5" value="0" /> <!-- Cada cop que movem l'slider cridem a la funció filtrarEdificis() -->
+            <input onChange="activarEdificis(this.checked);" id="checkboxUpdate" type="checkbox" checked >
+            <span class="checkbox-txt">Activa edificis</span>
+        </div>
+        <div id="map"></div>
+    </body>
+
+</html>

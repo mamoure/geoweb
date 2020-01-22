@@ -8,6 +8,37 @@ body {
     background-color: #ffffff
 }
 
-.titulo{
-    
+.panelTopIzquierda {
+    position: absolute;
+    top: 45px;
+    left: 20px;
+    width: 200px;
+    z-index: 1000;
+    background-color: rgba(255,255,255,0.9);
+    padding: 10px;
+    font-size:20px;
+    color: #333333;
+    border-radius: 5px;
+}
+
+.panelTopIzquierda:hover {
+    background-color: aquamarine;
+}
+
+.panelTopIzquierda label{
+    font-size:0.85em;
+}
+
+.panelTopIzquierda input{
+    cursor:pointer;
+    display: block;
+}
+
+#checkboxUpdate {
+    display: inline-block;
+    width: 30px;
+}
+
+.checkbox-txt {
+    display: inline-block;
 }
