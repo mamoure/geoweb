@@ -10,7 +10,7 @@ function addEdificiosCapa() {
         "id": "edificis",
         "type": "fill-extrusion", // Volem visualitzar alçades
         "source": "edificis_source", // Source creat anteriorment
-        "source-layer": "construccions-9cjnpk", // Afegir el nom del Tileset (nom de la capa que volem visualitzar)
+        "source-layer": "mamoure.6b5yqglu", // Afegir el nom del Tileset (nom de la capa que volem visualitzar)
         "maxzoom": 24,
         "minzoom": 15,
         "filter": [">", "numberOfFloorsAboveGround", 0], // Només mostra els valors del camp numberOfFloorsAboveGround que siguin més grans que 0. És a dir, mostra només edificis d'1 planta o més.
