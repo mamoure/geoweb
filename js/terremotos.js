@@ -39,7 +39,7 @@ function generarPeticionTerremotos() {
     //}   
 
     //Variable que concatena parámetros
-    var peticion = 'http://api.geonames.org/earthquakesJSON?' +
+    var peticion = 'http://secure.geonames.org/earthquakesJSON?' +
         'north=' + map.getBounds()._ne.lat + '&' +
         'south=' + map.getBounds()._sw.lat + '&' +
         'east=' + map.getBounds()._ne.lng + '&' +
